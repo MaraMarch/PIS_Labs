@@ -1,140 +1,61 @@
-Проектирование интернет-систем (ПИС) - 2026
-Курс: 3
-Семестр: 6
-Форма аттестации: Зачёт
+# 🚑 Incident Management System (PIS-2026)
+> Проектирование интернет-систем | Вариант №26
 
-🎯 Про что этот курс?
-Научимся делать интернет-системы правильно: не просто CRUD на коленке, а настоящую архитектуру с DDD, микросервисами, CQRS и другими buzzword'ами, которые реально работают! 💪
+[![Python](https://img.shields.io/badge/python-3.13-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)](https://fastapi.tiangolo.com/)
+[![gRPC](https://img.shields.io/badge/gRPC-latest-green.svg)](https://grpc.io/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
 
-📚 Структура курса
-32 часа лекций (архитектура, паттерны, best practices)
-24 часа лабораторных (практика - руки в код!)
-9 лабораторных работ - одна предметная область, прокачивается от ЛР к ЛР
-🚀 Лабораторные работы
-Полный список из 40 вар вариантов →
+**Питч:** Сломалось — чиним. Меньше паники, больше SLA. Система автоматизированного управления инцидентами с микросервисной архитектурой.
 
-С чего начать →
+---
 
-Учебные материалы →
+## 🏗 Архитектура проекта
+Проект реализован с использованием **Гексагональной архитектуры** (Clean Architecture):
 
-Прогрессия: выбираешь один вариант в начале семестра и развиваешь его через все 9 лаб:
+*   `domain/` — Чистая бизнес-логика и сущности (ЛР 3).
+*   `application/` — Сценарии использования и CQRS (ЛР 4).
+*   `infrastructure/` — Технические детали: БД, gRPC, конфигурация (ЛР 5).
 
-Сценарий транзакции - моделируем use-case, находим точки отказа
-Гексагональная архитектура - порты/адаптеры, изоляция домена
-Доменный уровень - Entity, Value Object, Агрегаты, инварианты
-Уровень приложения - CQRS, команды, запросы, обработчики
-Инфраструктурный уровень - БД, репозитории, адаптеры, конфигурация
-Тестирование - unit/integration тесты, CI, покрытие кода
-CQRS - разделение чтения/записи, eventual consistency
-Модули и сервисы - декомпозиция на bounded contexts, микросервисы
-Protocol Buffers - gRPC, версионирование схем, производительность
-🎨 Примеры вариантов
-🚀 Таск-трекер «Не прокрастинируй» - Ставим задачи быстрее, чем откладываем
-📅 Бронь аудиторий «Не занято?» - Бронируй до того, как заняли магистры
-🎓 Мини-LMS «Учись, не болей» - Короткие уроки, длинные знания
-🔥 Хэбит-трекер «Я молодец!» - Отметь прогресс - порадуй дофамин
-💸 Финучёт «Где мои деньги» - Траты видны - совесть включена
-...и ещё 35 крутых тем!
+### Схема взаимодействия
+```mermaid
+sequenceDiagram
+    participant Client as Браузер (Swagger)
+    participant API as Incident API (FastAPI)
+    participant DB as SQLite (Async)
+    participant gRPC as Notifier (gRPC Server)
 
-🛠️ Технологический стек (на выбор)
-Backend:
+    Client->>API: POST /incidents
+    API->>API: Расчет SLA (Domain logic)
+    API->>DB: Сохранение данных
+    API->>gRPC: SendAlert (Protobuf)
+    gRPC-->>API: Response (Success)
+    API-->>Client: 200 OK (Created)
 
-Java (Spring Boot)
-C# (ASP.NET Core)
-Python (FastAPI/Django)
-Node.js (NestJS/Express)
-Go (если вы хардкор 😎)
-База данных:
+🛠 Технологический стек
+Backend: Python 3.13 (FastAPI)
+Database: SQLAlchemy 2.0 (Async) + aiosqlite
+Microservices: gRPC (Protocol Buffers)
+Environment: Docker + Docker Compose
 
-PostgreSQL / MySQL (основная БД)
-Redis (кэш, сессии)
-Сообщения:
+📈 Прогресс по Лабораторным работам
 
-RabbitMQ / Kafka (для событий)
-Контейнеризация:
+ЛР 1-2: Сценарии транзакций и Гексагональная архитектура.
 
-Docker, Docker Compose
-Тестирование:
+ЛР 3: Доменный уровень (SLA бизнес-логика).
 
-JUnit/TestNG, xUnit, pytest, Jest - по стеку
-API:
+ЛР 4: Слой приложения и CQRS (Commands & Queries).
 
-REST (OpenAPI/Swagger)
-gRPC (Protocol Buffers)
-📊 Оценивание
-70% - Лабораторные работы и их защита
-30% - Текущий контроль (опросы, мини-проверки)
-Важно: Каждая лаба усложняет предыдущую - нельзя пропустить!
+ЛР 5: Инфраструктурный слой (Persistance).
 
-📝 Правила сдачи лабораторных
-Формат: Репозиторий + README + защита
-Критерии: Корректность архитектуры, соблюдение границ, тестируемость, качество кода
-Git: Используй ветки для каждой лабы (lab-01, lab-02, ...)
-Рефакторинг: Можно (и нужно!) улучшать код предыдущих лаб
-Подписанные коммиты (обязательно)
-Все коммиты должны быть подписаны и отображаться в GitHub как Verified.
+ЛР 8: Микросервисная декомпозиция.
 
-1) Сгенерируйте ключ (интерактивно)
-gpg --full-generate-key
-Рекомендуемые ответы:
+ЛР 9: Межсервисное взаимодействие через gRPC.
 
-Type: RSA and RSA
-Size: 4096
-Expire: 0 (без срока) или 1y (на год)
-Name/Email: тот же email, что в GitHub
-2) Найдите Key ID
-gpg --list-secret-keys --keyid-format=long
-Скопируйте значение после sec   rsa4096/ - это ваш KEY_ID.
+🚀 Быстрый запуск
+Всего одна команда (нужен Docker Desktop):
+docker-compose up --build
 
-3) Добавьте ключ в GitHub (публичную часть)
-gpg --armor --export <KEY_ID>
-Скопируйте вывод и добавьте в GitHub: Settings -> SSH and GPG keys -> New GPG key.
-
-4) Включите подпись коммитов глобально
-git config --global user.signingkey <KEY_ID>
-git config --global commit.gpgsign true
-git config --global gpg.program gpg
-5) Проверка
-git commit -m "test signed commit" --allow-empty
-git log --show-signature -1
-Если подпись не отображается как Verified, проверьте:
-
-Email в ключе совпадает с email в GitHub
-Публичный ключ добавлен в GitHub: Settings -> SSH and GPG keys
-🎓 Результаты обучения
-После курса ты сможешь:
-
-Проектировать доменную модель (bounded context, entities/value objects, aggregates)
-Применять архитектурные паттерны (hexagonal/clean architecture)
-Разделять ответственность через CQRS
-Декомпозировать систему на микросервисы
-Проектировать API и интеграции (REST/gRPC, асинхронные сообщения)
-Тестировать архитектуру (unit/integration тесты)
-Применять базовые практики DevOps (CI/CD, контейнеризация)
-📖 Материалы
-Варианты лабораторных работ
-Лабораторная работа №1
-Лабораторная работа №2
-Лабораторная работа №3
-Лабораторная работа №4
-Лабораторная работа №5
-Лабораторная работа №6
-Лабораторная работа №7
-Лабораторная работа №8
-Лабораторная работа №9
-Успеваемость
-<style> table { border-collapse: collapse; } table th, table td { border: 1px solid #d0d7de; padding: 6px 8px; } table thead th { background-color: #f6f8fa; } </style>
-💡 Советы
-Не откладывай - каждая лаба строится на предыдущей
-Читай код других систем (GitHub, open source проекты)
-Задавай вопросы - лучше переспросить, чем сделать неправильно
-Тестируй - код без тестов = дом без фундамента
-Рефактори смело - архитектура эволюционирует
-Используй AI - GitHub Copilot, ChatGPT для генерации шаблонов (но понимай, что генерируешь!)
-🤝 Контакты преподавателя
-Email: [указать]
-Консультации: [указать время и место]
-Репозиторий курса: https://github.com/brstu/PIS-2026
-Главное правило: Пишем код так, чтобы через год не ругать себя 😄
-
-Удачи! 🚀
+🌐 Main Dashboard: http://localhost:8000
+📖 Swagger Documentation: http://localhost:8000/docs
+📡 gRPC Service: localhost:50051
