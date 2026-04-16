@@ -1,0 +1,19 @@
+services:
+  # Основной сервис API
+  incident_api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./test.db
+      - GRPC_SERVER_HOST=notification_service # Имя сервиса в докере!
+      - GRPC_SERVER_PORT=50051
+    depends_on:
+      - notification_service
+
+  # Сервис уведомлений (gRPC)
+  notification_service:
+    build: .
+    command: python -m notification_service.server
+    ports:
+      - "50051:50051"

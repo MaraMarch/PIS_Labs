@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package incident;
+
+service NotificationService {
+  rpc SendAlert (AlertRequest) returns (AlertResponse);
+}
+
+message AlertRequest {
+  string incident_id = 1;
+  string title = 2;
+  int32 priority = 3;
+}
+
+message AlertResponse {
+  bool success = 1;
+  string message = 2;
+}
