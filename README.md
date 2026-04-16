@@ -17,26 +17,6 @@
 *   `application/` — Сценарии использования и CQRS (ЛР 4).
 *   `infrastructure/` — Технические детали: БД, gRPC, конфигурация (ЛР 5).
 
-### Схема взаимодействия
-```mermaid
-sequenceDiagram
-    participant Client as Браузер (Swagger)
-    participant API as Incident API (FastAPI)
-    participant DB as SQLite (Async)
-    participant gRPC as Notifier (gRPC Server)
-
-    Client->>API: POST /incidents
-    API->>API: Расчет SLA (Domain logic)
-    API->>DB: Сохранение данных
-    API->>gRPC: SendAlert (Protobuf)
-    gRPC-->>API: Response (Success)
-    API-->>Client: 200 OK (Created)
-
-🛠 Технологический стек
-Backend: Python 3.13 (FastAPI)
-Database: SQLAlchemy 2.0 (Async) + aiosqlite
-Microservices: gRPC (Protocol Buffers)
-Environment: Docker + Docker Compose
 
 📈 Прогресс по Лабораторным работам
 
