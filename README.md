@@ -36,6 +36,8 @@
 Всего одна команда (нужен Docker Desktop):
 docker-compose up --build
 
+Отчёты по всем 9 лабораторным работам находятся в папке /docs/reports
+
 🌐 Main Dashboard: http://localhost:8000
 📖 Swagger Documentation: http://localhost:8000/docs
 📡 gRPC Service: localhost:50051
